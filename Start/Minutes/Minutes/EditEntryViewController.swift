@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import AppCenterAnalytics
 
 class EditEntryViewController: UIViewController
 {
@@ -19,7 +20,14 @@ class EditEntryViewController: UIViewController
             entry = Entry()
             self.title = "Add New Entry"
         }
-        
+        else
+        {
+            let time = -((entry?.createdDate.timeIntervalSinceNow)!)
+            let interval = String(format: "%.0f", time)
+            let properties = ["id": entry!.id, "time": interval]
+            MSAnalytics.trackEvent("EditEntry", withProperties: properties)
+            
+        }
         titleTextField.text = entry?.title
         contentTextView.text = entry?.content
     }
